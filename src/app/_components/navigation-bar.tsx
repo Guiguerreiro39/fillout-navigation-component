@@ -5,6 +5,8 @@ import { NavigationButton } from "./navigation-button";
 import { useRouter } from "next/navigation";
 import { Fragment } from "react";
 import { FileText } from "lucide-react";
+import { Dash } from "@/app/_components/dash";
+import { NewPage } from "@/app/_components/new-page";
 
 type Props = {
   items: Item[];
@@ -18,9 +20,7 @@ export const NavigationBar = ({ items, activeItem }: Props) => {
     <div className="flex items-center">
       {items.map((item, index) => (
         <Fragment key={item.id}>
-          {index > 0 && (
-            <hr className="w-[20px] h-[2px] border-dashed border-[#C0C0C0]" />
-          )}
+          {index > 0 && <Dash />}
           <NavigationButton
             isActive={item.id === activeItem}
             onClick={() => {
@@ -32,6 +32,8 @@ export const NavigationBar = ({ items, activeItem }: Props) => {
           </NavigationButton>
         </Fragment>
       ))}
+      <Dash />
+      <NewPage key={items.length} defaultName={`Page ${items.length + 1}`} />
     </div>
   );
 };

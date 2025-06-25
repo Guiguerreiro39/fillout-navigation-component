@@ -10,7 +10,7 @@ export type Item = {
 
 type NavigationState = {
   items: Item[];
-  addItem: (item: Item) => void;
+  addItem: (name: string) => Item;
 };
 
 export const useNavigationStore = create<NavigationState>((set) => ({
@@ -20,8 +20,16 @@ export const useNavigationStore = create<NavigationState>((set) => ({
     { name: "Other", id: "3" },
     { name: "Ending", id: "4", icon: <CircleCheck /> },
   ],
-  addItem: (item) =>
+  addItem: (name) => {
+    const newItem = {
+      name,
+      id: uuid(),
+    };
+
     set((state) => ({
-      items: [...state.items, { ...item, id: uuid() }],
-    })),
+      items: [...state.items, newItem],
+    }));
+
+    return newItem;
+  },
 }));
