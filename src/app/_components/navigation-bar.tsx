@@ -1,39 +1,76 @@
 "use client";
 
-import { Item } from "@/store";
+import { Item, useNavigationStore } from "@/store";
 import { NavigationButton } from "./navigation-button";
 import { useRouter } from "next/navigation";
-import { Fragment } from "react";
 import { FileText } from "lucide-react";
-import { Dash } from "@/app/_components/dash";
 import { NewPage } from "@/app/_components/new-page";
+import { Dash } from "@/app/_components/dash";
+import { Reorder } from "framer-motion";
+import { useState } from "react";
 
 type Props = {
-  items: Item[];
+  sortableItems: Item[];
+  endingItem: Item;
   activeItem: string;
 };
 
-export const NavigationBar = ({ items, activeItem }: Props) => {
+export const NavigationBar = ({
+  sortableItems,
+  endingItem,
+  activeItem,
+}: Props) => {
+  const [isDragging, setIsDragging] = useState(false);
+
+  const sortItems = useNavigationStore((state) => state.sortItems);
+
   const router = useRouter();
 
   return (
-    <div className="flex items-center">
-      {items.map((item, index) => (
-        <Fragment key={item.id}>
-          {index > 0 && <Dash />}
+    <Reorder.Group values={sortableItems} onReorder={sortItems} axis="x">
+      <div className="flex items-center">
+        {sortableItems.map((item) => (
+          <div key={item.id} className="flex items-center">
+            <Reorder.Item
+              value={item}
+              dragListener={true}
+              onDragStart={() => setIsDragging(true)}
+              onDragEnd={() => setTimeout(() => setIsDragging(false), 0)}
+            >
+              <NavigationButton
+                className={isDragging ? "cursor-grabbing" : undefined}
+                isActive={item.id === activeItem}
+                onClick={() => {
+                  if (isDragging) return;
+                  router.push(`?activeItem=${item.id}`);
+                }}
+              >
+                {item.icon ?? <FileText />}
+                {item.name}
+              </NavigationButton>
+            </Reorder.Item>
+            <Dash />
+          </div>
+        ))}
+        <div className="flex items-center">
           <NavigationButton
-            isActive={item.id === activeItem}
+            className={isDragging ? "cursor-grabbing" : undefined}
+            isActive={endingItem.id === activeItem}
             onClick={() => {
-              router.push(`?activeItem=${item.id}`);
+              if (isDragging) return;
+              router.push(`?activeItem=${endingItem.id}`);
             }}
           >
-            {item.icon ?? <FileText />}
-            {item.name}
+            {endingItem.icon ?? <FileText />}
+            {endingItem.name}
           </NavigationButton>
-        </Fragment>
-      ))}
-      <Dash />
-      <NewPage key={items.length} defaultName={`Page ${items.length + 1}`} />
-    </div>
+          <Dash />
+        </div>
+        <NewPage
+          key={sortableItems.length}
+          defaultName={`Page ${sortableItems.length + 2}`}
+        />
+      </div>
+    </Reorder.Group>
   );
 };

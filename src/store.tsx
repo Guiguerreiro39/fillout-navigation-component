@@ -9,27 +9,35 @@ export type Item = {
 };
 
 type NavigationState = {
-  items: Item[];
+  sortableItems: Item[];
+  endingItem: Item;
   addItem: (name: string) => Item;
+  sortItems: (items: Item[]) => void;
 };
 
 export const useNavigationStore = create<NavigationState>((set) => ({
-  items: [
+  sortableItems: [
     { name: "Info", id: "1", icon: <Info /> },
     { name: "Details", id: "2" },
     { name: "Other", id: "3" },
-    { name: "Ending", id: "4", icon: <CircleCheck /> },
   ],
+  endingItem: { name: "Ending", id: "4", icon: <CircleCheck /> },
   addItem: (name) => {
     const newItem = {
       name,
       id: uuid(),
     };
 
+    // Always maintains the ending at the end
     set((state) => ({
-      items: [...state.items, newItem],
+      sortableItems: [...state.sortableItems, newItem],
     }));
 
     return newItem;
+  },
+  sortItems: (items) => {
+    set(() => ({
+      sortableItems: items,
+    }));
   },
 }));
