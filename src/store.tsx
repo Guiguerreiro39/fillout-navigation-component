@@ -2,7 +2,7 @@ import { v4 as uuid } from "uuid";
 import { create } from "zustand";
 import { CircleCheck, Info } from "lucide-react";
 
-type Item = {
+export type Item = {
   icon?: React.ReactNode;
   name: string;
   id: string;
