@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Item } from "@/store";
 import { z } from "zod";
@@ -33,6 +33,12 @@ export const NavigationButton = ({
 }: Props) => {
   const [name, setName] = useState(item.name);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setName(item.name);
+  }, [item.name]);
+
   const handleEditingEnd = () => {
     try {
       schema.parse(name);
@@ -64,8 +70,10 @@ export const NavigationButton = ({
         {item.icon}
         {isEditing ? (
           <input
+            name="name-input"
             className="field-sizing-content focus:outline-ring/25"
             autoFocus
+            ref={inputRef}
             value={name}
             onChange={(e) => setName(e.target.value)}
             onBlur={handleEditingEnd}

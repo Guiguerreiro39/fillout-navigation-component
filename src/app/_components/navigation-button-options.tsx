@@ -79,6 +79,7 @@ export const NavigationButtonOptions = ({ item }: Props) => {
         onClose={() => setIsDeleteDialogOpen(false)}
       />
       <RenameDialog
+        key={item.name}
         item={item}
         isOpen={isRenameDialogOpen}
         onClose={() => setIsRenameDialogOpen(false)}
