@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { PropsWithChildren } from "react";
+import { motion } from "framer-motion";
 
 type Props = PropsWithChildren<{
   isActive: boolean;
@@ -14,12 +15,18 @@ export const NavigationButton = ({
   className,
 }: Props) => {
   return (
-    <Button
-      variant={isActive ? "active" : "default"}
-      onClick={onClick}
-      className={className}
+    <motion.div
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
+      transition={{ duration: 0.2 }}
     >
-      {children}
-    </Button>
+      <Button
+        variant={isActive ? "active" : "default"}
+        onClick={onClick}
+        className={className}
+      >
+        {children}
+      </Button>
+    </motion.div>
   );
 };

@@ -14,21 +14,18 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useNavigationStore } from "@/store";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FileText, Plus } from "lucide-react";
+import { FileText } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { PropsWithChildren, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-type Props = {
-  defaultName: string;
-};
+type Props = PropsWithChildren;
 
 const formSchema = z.object({
   name: z
@@ -37,7 +34,7 @@ const formSchema = z.object({
     .max(36, "Name must be at most 36 characters long"),
 });
 
-export const NewPage = ({ defaultName }: Props) => {
+export const NewPageDialog = ({ children }: Props) => {
   const [open, setOpen] = useState(false);
   const addItem = useNavigationStore((state) => state.addItem);
 
@@ -46,7 +43,7 @@ export const NewPage = ({ defaultName }: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: defaultName,
+      name: "New page",
     },
   });
 
@@ -54,17 +51,14 @@ export const NewPage = ({ defaultName }: Props) => {
     const newItem = addItem(data.name);
     router.push(`?activeItem=${newItem.id}`);
 
+    form.reset();
+
     setOpen(false);
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button>
-          <Plus className="!text-foreground" />
-          Add page
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <div className="flex items-center gap-2">
@@ -79,7 +73,6 @@ export const NewPage = ({ defaultName }: Props) => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input placeholder="Name of your new page" {...field} />
                   </FormControl>

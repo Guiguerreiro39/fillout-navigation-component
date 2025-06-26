@@ -3,11 +3,12 @@
 import { Item, useNavigationStore } from "@/store";
 import { NavigationButton } from "./navigation-button";
 import { useRouter } from "next/navigation";
-import { FileText } from "lucide-react";
-import { NewPage } from "@/app/_components/new-page";
+import { Plus } from "lucide-react";
+import { NewPageDialog } from "@/app/_components/new-page-dialog";
 import { Dash } from "@/app/_components/dash";
 import { Reorder } from "framer-motion";
-import { useState } from "react";
+import { Fragment, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   sortableItems: Item[];
@@ -29,8 +30,8 @@ export const NavigationBar = ({
   return (
     <Reorder.Group values={sortableItems} onReorder={sortItems} axis="x">
       <div className="flex items-center">
-        {sortableItems.map((item) => (
-          <div key={item.id} className="flex items-center">
+        {sortableItems.map((item, index) => (
+          <Fragment key={item.id}>
             <Reorder.Item
               value={item}
               dragListener={true}
@@ -45,31 +46,30 @@ export const NavigationBar = ({
                   router.push(`?activeItem=${item.id}`);
                 }}
               >
-                {item.icon ?? <FileText />}
+                {item.icon}
                 {item.name}
               </NavigationButton>
             </Reorder.Item>
-            <Dash />
-          </div>
+            <Dash index={index + 1} />
+          </Fragment>
         ))}
-        <div className="flex items-center">
-          <NavigationButton
-            className={isDragging ? "cursor-grabbing" : undefined}
-            isActive={endingItem.id === activeItem}
-            onClick={() => {
-              if (isDragging) return;
-              router.push(`?activeItem=${endingItem.id}`);
-            }}
-          >
-            {endingItem.icon ?? <FileText />}
-            {endingItem.name}
-          </NavigationButton>
-          <Dash />
-        </div>
-        <NewPage
-          key={sortableItems.length}
-          defaultName={`Page ${sortableItems.length + 2}`}
-        />
+        <NavigationButton
+          isActive={endingItem.id === activeItem}
+          onClick={() => {
+            if (isDragging) return;
+            router.push(`?activeItem=${endingItem.id}`);
+          }}
+        >
+          {endingItem.icon}
+          {endingItem.name}
+        </NavigationButton>
+        <Dash disabled />
+        <NewPageDialog>
+          <Button>
+            <Plus className="!text-foreground" />
+            Add page
+          </Button>
+        </NewPageDialog>
       </div>
     </Reorder.Group>
   );
