@@ -12,9 +12,11 @@ const buttonVariants = cva(
         primary:
           "border border-transparent bg-blue-600 hover:bg-blue-700 text-white",
         active:
-          "hover:bg-neutral-50 border bg-background shadow-xs [&_svg]:text-icon-primary",
+          "hover:bg-neutral-100 border bg-background shadow-xs [&_svg]:text-icon-primary",
         default:
           "border border-transparent bg-secondary/15 hover:bg-secondary/35 text-secondary-foreground [&_svg]:text-icon-secondary",
+        destructive:
+          "hover:bg-red-700/80 bg-destructive border border-transparent text-white shadow-xs [&_svg]:text-white",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

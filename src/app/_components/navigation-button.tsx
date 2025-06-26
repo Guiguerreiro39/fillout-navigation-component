@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { Item } from "@/store";
 import { z } from "zod";
 import { toast } from "sonner";
+import { NavigationButtonOptions } from "./navigation-button-options";
+import { cn } from "@/lib/utils";
 
 type Props = {
   isActive: boolean;
@@ -48,12 +50,16 @@ export const NavigationButton = ({
       initial={{ scale: 0 }}
       animate={{ scale: 1 }}
       transition={{ duration: 0.2 }}
+      className="relative"
     >
       <Button
         variant={isActive ? "active" : "default"}
         onClick={onClick}
         onDoubleClick={onDoubleClick}
-        className={className}
+        className={cn(
+          className,
+          isActive && "has-[>svg]:px-0 has-[>svg]:pl-3 has-[>svg]:pr-7"
+        )}
       >
         {item.icon}
         {isEditing ? (
@@ -74,6 +80,7 @@ export const NavigationButton = ({
           <p>{item.name}</p>
         )}
       </Button>
+      {isActive && <NavigationButtonOptions item={item} />}
     </motion.div>
   );
 };

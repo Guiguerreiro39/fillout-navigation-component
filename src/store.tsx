@@ -13,6 +13,8 @@ type NavigationState = {
   endingItem: Item;
   addItem: (name: string, index?: number) => Item;
   updateItem: (id: string, name: string) => void;
+  deleteItem: (id: string) => void;
+  duplicateItem: (id: string) => void;
   sortItems: (items: Item[]) => void;
 };
 
@@ -51,6 +53,36 @@ export const useNavigationStore = create<NavigationState>((set) => ({
 
       if (item) {
         item.name = name;
+      }
+
+      return { sortableItems };
+    });
+  },
+  deleteItem: (id) => {
+    set((state) => {
+      const sortableItems = [...state.sortableItems];
+      const itemIndex = sortableItems.findIndex((item) => item.id === id);
+
+      if (itemIndex !== -1) {
+        sortableItems.splice(itemIndex, 1);
+      }
+
+      return { sortableItems };
+    });
+  },
+  duplicateItem: (id) => {
+    set((state) => {
+      const sortableItems = [...state.sortableItems];
+      const itemIndex = sortableItems.findIndex((item) => item.id === id);
+
+      if (itemIndex !== -1) {
+        const item = sortableItems[itemIndex];
+        const newItem = {
+          name: item.name,
+          id: uuid(),
+          icon: item.icon,
+        };
+        sortableItems.splice(itemIndex + 1, 0, newItem);
       }
 
       return { sortableItems };

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import { CircleX } from "lucide-react";
+import { CircleCheck, CircleX } from "lucide-react";
 
 const interSans = Inter({
   variable: "--font-inter-sans",
@@ -25,6 +25,7 @@ export default function RootLayout({
         <Toaster
           icons={{
             error: <CircleX className="text-destructive size-5" />,
+            success: <CircleCheck className="text-green-700 size-5" />,
           }}
         />
         {children}
