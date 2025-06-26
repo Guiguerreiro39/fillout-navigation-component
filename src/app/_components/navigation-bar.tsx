@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import { Plus } from "lucide-react";
 import { NewPageDialog } from "@/app/_components/new-page-dialog";
 import { Dash } from "@/app/_components/dash";
-import { Reorder } from "framer-motion";
-import { Fragment, useState } from "react";
+import { motion, Reorder } from "framer-motion";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 type Props = {
@@ -31,10 +31,16 @@ export const NavigationBar = ({
     <Reorder.Group values={sortableItems} onReorder={sortItems} axis="x">
       <div className="flex items-center">
         {sortableItems.map((item, index) => (
-          <Fragment key={item.id}>
+          <motion.div
+            key={item.id}
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: "auto", opacity: 1 }}
+            exit={{ width: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="flex items-center"
+          >
             <Reorder.Item
               value={item}
-              dragListener={true}
               onDragStart={() => setIsDragging(true)}
               onDragEnd={() => setTimeout(() => setIsDragging(false), 0)}
             >
@@ -45,13 +51,11 @@ export const NavigationBar = ({
                   if (isDragging) return;
                   router.push(`?activeItem=${item.id}`);
                 }}
-              >
-                {item.icon}
-                {item.name}
-              </NavigationButton>
+                item={item}
+              />
             </Reorder.Item>
             <Dash index={index + 1} />
-          </Fragment>
+          </motion.div>
         ))}
         <NavigationButton
           isActive={endingItem.id === activeItem}
@@ -59,11 +63,11 @@ export const NavigationBar = ({
             if (isDragging) return;
             router.push(`?activeItem=${endingItem.id}`);
           }}
-        >
-          {endingItem.icon}
-          {endingItem.name}
-        </NavigationButton>
+          item={endingItem}
+        />
+
         <Dash disabled />
+
         <NewPageDialog>
           <Button>
             <Plus className="!text-foreground" />

@@ -11,7 +11,8 @@ const buttonVariants = cva(
       variant: {
         primary:
           "border border-transparent bg-blue-600 hover:bg-blue-700 text-white",
-        active: "border bg-background shadow-xs [&_svg]:text-icon-primary",
+        active:
+          "hover:bg-neutral-50 border bg-background shadow-xs [&_svg]:text-icon-primary",
         default:
           "border border-transparent bg-secondary/15 hover:bg-secondary/35 text-secondary-foreground [&_svg]:text-icon-secondary",
       },

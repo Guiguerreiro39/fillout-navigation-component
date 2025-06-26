@@ -12,6 +12,7 @@ type NavigationState = {
   sortableItems: Item[];
   endingItem: Item;
   addItem: (name: string, index?: number) => Item;
+  updateItem: (id: string, name: string) => void;
   sortItems: (items: Item[]) => void;
 };
 
@@ -42,6 +43,18 @@ export const useNavigationStore = create<NavigationState>((set) => ({
     }
 
     return newItem;
+  },
+  updateItem: (id, name) => {
+    set((state) => {
+      const sortableItems = [...state.sortableItems];
+      const item = sortableItems.find((item) => item.id === id);
+
+      if (item) {
+        item.name = name;
+      }
+
+      return { sortableItems };
+    });
   },
   sortItems: (items) => {
     set(() => ({
