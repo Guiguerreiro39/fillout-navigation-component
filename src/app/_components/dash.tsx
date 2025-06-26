@@ -32,7 +32,7 @@ export const Dash = ({ disabled = false, index, onItemAdd }: Props) => {
         <Button
           onClick={handleOnClick}
           size="icon"
-          className="rounded-full absolute group-hover:opacity-100 not-group-hover:pointer-events-none opacity-0 transition-all left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+          className="rounded-full absolute hover:scale-125 group-hover:opacity-100 not-group-hover:pointer-events-none opacity-0 transition-all left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         >
           <Plus className="!text-foreground !size-[8px]" />
         </Button>
