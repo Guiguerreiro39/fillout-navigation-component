@@ -9,6 +9,7 @@ This is a take-home project for [Fillout](https://fillout.com). The project is a
 - Double click to rename a page;
 - Highlight active page and other pages are selectable. Also depending on the page the page content changes;
 - Context menu where it is possible to `duplicate`, `delete` and `rename`. The rest of the options will only trigger a toast;
+- Ending item is locked (cannot be dragged) and only has the option to rename it. This was done to be align with the current behavior in the app;
 
 ## Used packages
 

@@ -79,6 +79,7 @@ export const NavigationBar = ({
             if (isDragging) return;
             router.push(`?activeItem=${endingItem.id}`);
           }}
+          isEndingItem
           isEditing={isEditing === endingItem.id}
           onDoubleClick={() => setIsEditing(endingItem.id)}
           onEditingEnd={(name) => handleEditingEnd(endingItem.id, name)}

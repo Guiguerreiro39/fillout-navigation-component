@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 
 type Props = {
   isActive: boolean;
+  isEndingItem?: boolean;
   isEditing: boolean;
   onClick: () => void;
   onDoubleClick: () => void;
@@ -24,6 +25,7 @@ const schema = z
 
 export const NavigationButton = ({
   isActive,
+  isEndingItem = false,
   item,
   onClick,
   onDoubleClick,
@@ -88,7 +90,9 @@ export const NavigationButton = ({
           <p>{item.name}</p>
         )}
       </Button>
-      {isActive && <NavigationButtonOptions item={item} />}
+      {isActive && (
+        <NavigationButtonOptions item={item} isEndingItem={isEndingItem} />
+      )}
     </motion.div>
   );
 };

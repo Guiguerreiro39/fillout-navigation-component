@@ -26,9 +26,10 @@ import { toast } from "sonner";
 
 type Props = {
   item: Item;
+  isEndingItem: boolean;
 };
 
-export const NavigationButtonOptions = ({ item }: Props) => {
+export const NavigationButtonOptions = ({ item, isEndingItem }: Props) => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isRenameDialogOpen, setIsRenameDialogOpen] = useState(false);
 
@@ -43,34 +44,43 @@ export const NavigationButtonOptions = ({ item }: Props) => {
         <DropdownMenuContent align="start" className="w-[240px]">
           <DropdownMenuLabel>Settings</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuItem
-              onClick={() => toast.success("Page set as first page!")}
-            >
-              <Flag className="fill-[#2F72E2] text-[#2F72E2]" />
-              Set as first page
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setIsRenameDialogOpen(true)}>
-              <PenLine />
-              Rename
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => toast.success("Page copied!")}>
-              <Clipboard />
-              Copy
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => duplicateItem(item.id)}>
-              <Duplicate />
-              Duplicate
-            </DropdownMenuItem>
-            <DropdownMenuSeparator className="mx-2" />
-            <DropdownMenuItem
-              className="text-destructive focus:bg-destructive/10"
-              onClick={() => setIsDeleteDialogOpen(true)}
-            >
-              <Trash2 className="text-destructive" />
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
+          {isEndingItem ? (
+            <DropdownMenuGroup>
+              <DropdownMenuItem onClick={() => setIsRenameDialogOpen(true)}>
+                <PenLine />
+                Rename
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          ) : (
+            <DropdownMenuGroup>
+              <DropdownMenuItem
+                onClick={() => toast.success("Page set as first page!")}
+              >
+                <Flag className="fill-[#2F72E2] text-[#2F72E2]" />
+                Set as first page
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setIsRenameDialogOpen(true)}>
+                <PenLine />
+                Rename
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => toast.success("Page copied!")}>
+                <Clipboard />
+                Copy
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => duplicateItem(item.id)}>
+                <Duplicate />
+                Duplicate
+              </DropdownMenuItem>
+              <DropdownMenuSeparator className="mx-2" />
+              <DropdownMenuItem
+                className="text-destructive focus:bg-destructive/10"
+                onClick={() => setIsDeleteDialogOpen(true)}
+              >
+                <Trash2 className="text-destructive" />
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
       <DeleteConfirmation
