@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
+import { CircleX } from "lucide-react";
 
 const interSans = Inter({
   variable: "--font-inter-sans",
@@ -19,7 +21,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${interSans.variable} antialiased`}>{children}</body>
+      <body className={`${interSans.variable} antialiased`}>
+        <Toaster
+          icons={{
+            error: <CircleX className="text-destructive size-5" />,
+          }}
+        />
+        {children}
+      </body>
     </html>
   );
 }

@@ -22,14 +22,21 @@ export const NavigationBar = ({
   activeItem,
 }: Props) => {
   const [isDragging, setIsDragging] = useState(false);
+  const [isEditing, setIsEditing] = useState<string | null>(null);
 
   const sortItems = useNavigationStore((state) => state.sortItems);
+  const updateItem = useNavigationStore((state) => state.updateItem);
 
   const router = useRouter();
 
+  const handleEditingEnd = (id: string, newName: string) => {
+    setIsEditing(null);
+    updateItem(id, newName);
+  };
+
   return (
     <Reorder.Group values={sortableItems} onReorder={sortItems} axis="x">
-      <div className="flex items-center">
+      <div className="flex items-center overflow-auto w-full py-4">
         {sortableItems.map((item, index) => (
           <motion.div
             key={item.id}
@@ -47,14 +54,23 @@ export const NavigationBar = ({
               <NavigationButton
                 className={isDragging ? "cursor-grabbing" : undefined}
                 isActive={item.id === activeItem}
+                isEditing={isEditing === item.id}
                 onClick={() => {
                   if (isDragging) return;
                   router.push(`?activeItem=${item.id}`);
                 }}
+                onDoubleClick={() => setIsEditing(item.id)}
+                onEditingEnd={(name) => handleEditingEnd(item.id, name)}
                 item={item}
               />
             </Reorder.Item>
-            <Dash index={index + 1} />
+            <Dash
+              index={index + 1}
+              onItemAdd={(item) => {
+                router.push(`?activeItem=${item.id}`);
+                setIsEditing(item.id);
+              }}
+            />
           </motion.div>
         ))}
         <NavigationButton
@@ -63,6 +79,9 @@ export const NavigationBar = ({
             if (isDragging) return;
             router.push(`?activeItem=${endingItem.id}`);
           }}
+          isEditing={isEditing === endingItem.id}
+          onDoubleClick={() => setIsEditing(endingItem.id)}
+          onEditingEnd={(name) => handleEditingEnd(endingItem.id, name)}
           item={endingItem}
         />
 

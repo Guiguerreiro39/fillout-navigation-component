@@ -20,7 +20,7 @@ export default function Home() {
     searchParams.get("activeItem") ?? items.sortableItems[0].id;
 
   return (
-    <div className="min-h-screen p-8 sm:p-20 bg-[#F9FAFB] flex flex-col gap-4">
+    <div className="min-h-screen p-8 sm:p-20 bg-[#F9FAFB] flex flex-col">
       <PageContent item={allItems.find((item) => item.id === activeItem)} />
       <NavigationBar
         sortableItems={items.sortableItems}
